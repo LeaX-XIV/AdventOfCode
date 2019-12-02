@@ -4,7 +4,7 @@
 from functools import reduce
 from itertools import starmap
 
-global lines
+lines = []
 with open('input.txt', 'r') as f:
 	lines = f.readlines()
 
