@@ -1,8 +1,6 @@
 #!python
 # https://adventofcode.com/2019/day/2
 
-import sys, traceback
-
 memory = []
 pc = 0
 def reset():
