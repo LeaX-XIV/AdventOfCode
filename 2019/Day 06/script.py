@@ -4,7 +4,6 @@
 import re
 
 def badTreeSearch(tag, level):
-	# print(tag, level)
 	for o in orbits.keys():
 		if(tag in orbits[o].keys()):
 			level = badTreeSearch(o, level+1)
