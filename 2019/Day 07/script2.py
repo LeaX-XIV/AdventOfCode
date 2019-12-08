@@ -14,7 +14,7 @@ def reset():
 	memory = [[]] * 5
 	pc = [0] * 5
 	output = 0
-	with open('test.txt', 'r') as f:
+	with open('input.txt', 'r') as f:
 		memory[0] = [int(c) for c in f.readline().split(',')]
 		memory[1] = memory[0].copy()
 		memory[2] = memory[0].copy()
