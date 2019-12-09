@@ -119,7 +119,6 @@ def main():
 
 
 	for seq in it.permutations(range(5, 10)):
-	# seq = (9, 8, 7, 6, 5)
 		index = 0
 		output = 0
 		reset()

@@ -91,7 +91,7 @@ def clockCycle(id):
 		value = id
 		memory[dst] = value
 			
-	elif(opcode == 4):	# Output
+	elif(op == 4):	# Output
 		op1 = memory[pc]
 		pc += 1
 		if(m1 == 0):

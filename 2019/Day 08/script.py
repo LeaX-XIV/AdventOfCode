@@ -34,7 +34,7 @@ for index in range(w * h):
 for i in range(h):	# Part 2: EJRGP
 	for j in range(w):
 		if(image[i][j] == '1'):
-			print(0, end='')
+			print('█', end='')
 		elif(image[i][j] == '0'):
 			print(' ', end='')
 	print('')
