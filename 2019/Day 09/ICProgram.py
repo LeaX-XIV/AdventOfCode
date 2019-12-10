@@ -16,51 +16,51 @@ class ICProgram:
 
 	ops = {
 		# Add
-		'1': lambda self, v1, v2, dst, *args: self.memory.__setitem__(dst, v1 + v2),
+		1: lambda self, v1, v2, dst: self.memory.__setitem__(dst, v1 + v2),
 		# Multiply
-		'2': lambda self, v1, v2, dst, *args: self.memory.__setitem__(dst, v1 * v2),
+		2: lambda self, v1, v2, dst: self.memory.__setitem__(dst, v1 * v2),
 		# Input
-		'3': lambda self, p, *args: self.memory.__setitem__(p, self.inputBuffer.get()),
+		3: lambda self, p: self.memory.__setitem__(p, self.inputBuffer.get()),
 		# Output
-		'4': lambda self, p, *args: (self.outputBuffer.put(p)),
+		4: lambda self, p: (self.outputBuffer.put(p)),
 		# Jump if True
-		'5': lambda self, v1, v2, *args: ICProgram.__setattr__(self, 'ip', v2 if v1 != 0 else self.ip),
+		5: lambda self, v1, v2: ICProgram.__setattr__(self, 'ip', v2 if v1 != 0 else self.ip),
 		# Jump if False
-		'6': lambda self, v1, v2, *args: ICProgram.__setattr__(self, 'ip', v2 if v1 == 0 else self.ip),
+		6: lambda self, v1, v2: ICProgram.__setattr__(self, 'ip', v2 if v1 == 0 else self.ip),
 		# Lower than
-		'7': lambda self, v1, v2, dst, *args: self.memory.__setitem__(dst, 1 if v1 < v2 else 0),
+		7: lambda self, v1, v2, dst: self.memory.__setitem__(dst, 1 if v1 < v2 else 0),
 		# Equals
-		'8': lambda self, v1, v2, dst, *args: self.memory.__setitem__(dst, 1 if v1 == v2 else 0),
+		8: lambda self, v1, v2, dst: self.memory.__setitem__(dst, 1 if v1 == v2 else 0),
 		# Relative Base Adjust
-		'9': lambda self, a, *args: ICProgram.__setattr__(self, 'relBase', ICProgram.__getattribute__(self, 'relBase') + a),
+		9: lambda self, a: ICProgram.__setattr__(self, 'relBase', ICProgram.__getattribute__(self, 'relBase') + a),
 		# Halt
-		'99': lambda self, *args: ICProgram.__setattr__(self, 'state', ICPState.FINISHED)
+		99: lambda self: ICProgram.__setattr__(self, 'state', ICPState.FINISHED)
 	}
 
 	incs = {
-		'1': 4,
-		'2': 4,
-		'3': 2,
-		'4': 2,
-		'5': 3,
-		'6': 3,
-		'7': 4,
-		'8': 4,
-		'9': 2,
-		'99': 0
+		1: 4,
+		2: 4,
+		3: 2,
+		4: 2,
+		5: 3,
+		6: 3,
+		7: 4,
+		8: 4,
+		9: 2,
+		99: 0
 	}
 
 	ps = {
-		'1': [0, 0, 1],
-		'2': [0, 0, 1],
-		'3': [1],
-		'4': [0],
-		'5': [0, 0],
-		'6': [0, 0],
-		'7': [0, 0, 1],
-		'8': [0, 0, 1],
-		'9': [0],
-		'99': []
+		1: [0, 0, 1],
+		2: [0, 0, 1],
+		3: [1],
+		4: [0],
+		5: [0, 0],
+		6: [0, 0],
+		7: [0, 0, 1],
+		8: [0, 0, 1],
+		9: [0],
+		99: []
 	}
 	
 	def __init__(self):
@@ -128,35 +128,33 @@ class ICProgram:
 		opcode = args[0] % 100
 		ret = [opcode]
 
-		for i in range(ICProgram.incs[str(opcode)]-1):
-			v = args[i+1]
-			p = ICProgram.ps[str(opcode)][i]
-			m = (args[0] // 10**(2+i)) % 10
+		for i in range(ICProgram.incs[opcode] - 1):
+			v = args[i + 1]
+			p = ICProgram.ps[opcode][i]
+			m = (args[0] // 10 ** (2 + i)) % 10
+
+			if(m == 2):
+				v += self.relBase
 			
-			if(m == 2 and p == 0):
-				ret.append(self.memory[self.relBase + v])
-			elif(m == 2 and p == 1):
-				ret.append(self.relBase + v)
-			elif(m == 1 or p == 1):
+			if(m != 1 and p != 0):
+				self.__fitMemory__(v)
+			if(m == 1 or p == 1):
 				ret.append(v)
 			else:
 				ret.append(self.memory[v])
 
-		self.ip += ICProgram.incs[str(opcode)]
+		self.ip += ICProgram.incs[opcode]
 
 		return tuple(ret)
 	
 	def __execute__(self, opcode, *args):
 		self.state = ICPState.WAITING
-		# Do stuff...
-		ICProgram.ops[str(opcode)](self, *args)
+		ICProgram.ops[opcode](self, *args)
 		if(self.state is not ICPState.FINISHED):
 			self.state = ICPState.RUNNING
 
 	def __reset__(self):
 		self.memory = self.program.copy()
-		for _ in range(1000):
-			self.memory.append(0)
 		self.ip = 0
 		self.relBase = 0
 		self.state = ICPState.HALTED
@@ -167,27 +165,10 @@ class ICProgram:
 		self.thread = Thread(target=self.__run__)
 		self.thread.daemon = True
 
-# def main():
-# 	machine = [ICProgram() for i in range(5)]
-# 	program = []
-# 	with open('file.txt') as f:
-# 		program = [c for c in f.read().split(',')]
-# 	[machine[i].loadProgram(program) for i in range(5)]
-
-# 	o = 0
-# 	phases = [9, 7, 8, 5, 6]
-# 	i = 0
-
-# 	while(not machine[4].isFinished()):
-# 		if(i < 5):
-# 			machine[i].feedInput(phases[i])
-# 			machine[i%5].start()
-# 		machine[i%5].feedInput(o)
-# 		o = machine[i%5].getOutput(True)
-# 		i += 1
-
-# 	print(o)
-	
-
-# if(__name__ == "__main__"):
-# 	main()
+	def __fitMemory__(self, index):
+		if(index < 0):
+			raise IndexError('Trying to access location {}'.format(index))
+		try:
+			_ = self.memory[index]
+		except IndexError:
+			self.memory.extend([0 for _ in range(index - len(self.memory) + 1)])
