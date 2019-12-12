@@ -1,4 +1,4 @@
-#! python
+#!python
 
 from enum import Enum, auto, unique
 from queue import Queue
@@ -73,7 +73,6 @@ class ICProgram:
 		self.state = ICPState.OFF
 		self.thread = None
 
-
 	def loadProgram(self, memoryMap):
 		if(self.state is ICPState.OFF or self.state is ICPState.FINISHED):
 			if(memoryMap is not None):
@@ -90,7 +89,7 @@ class ICProgram:
 			return False
 		return True
 	
-	def getOutput(self, blocking=False):
+	def getOutput(self, blocking=True):
 		try:
 			return self.outputBuffer.get(blocking)
 		except:
@@ -141,7 +140,11 @@ class ICProgram:
 			if(m == 1 or p == 1):
 				ret.append(v)
 			else:
-				ret.append(self.memory[v])
+				try:
+					ret.append(self.memory[v])
+				except IndexError:
+					self.__fitMemory__(v)
+					ret.append(self.memory[v])
 
 		self.ip += ICProgram.incs[opcode]
 

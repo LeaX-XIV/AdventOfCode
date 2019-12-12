@@ -15,10 +15,10 @@ machine.loadProgram(program)
 machine.feedInput(1)
 machine.start()
 while(machine.waitForOutput()):
-	print(machine.getOutput(True))	# Part 1: 2775723069
+	print(machine.getOutput())	# Part 1: 2775723069
 
 machine.stop()
 machine.feedInput(2)
 machine.start()
 while(machine.waitForOutput()):
-	print(machine.getOutput(True))	# Part 2: 49115
+	print(machine.getOutput())	# Part 2: 49115

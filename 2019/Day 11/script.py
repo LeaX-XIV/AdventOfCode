@@ -13,6 +13,9 @@ direction = {
 
 pointing = 0
 position = (0, 0)
+# For Part 1:
+# visitedCells = {(0, 0): 0}
+# For Part 2
 visitedCells = {(0, 0): 1}
 
 lines = []
@@ -35,9 +38,9 @@ brain.loadProgram(lines)
 brain.feedInput(visitedCells[position])
 brain.start()
 while(brain.waitForOutput()):
-	newColor = brain.getOutput(True)
+	newColor = brain.getOutput()
 	visitedCells[position] = newColor
-	angle = brain.getOutput(True)
+	angle = brain.getOutput()
 	turn(angle)
 	move()
 	standingColor = visitedCells[position] if position in visitedCells.keys() else 0
