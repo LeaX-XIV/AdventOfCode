@@ -21,7 +21,7 @@ struct _string* string_init(void) {
 }
 
 struct _string* string_fromCharArray(char* cstr) {
-	if(arr == NULL) {
+	if(cstr == NULL) {
 		exit(EXIT_FAILURE);
 	}
 
@@ -36,7 +36,7 @@ struct _string* string_fromCharArray(char* cstr) {
 }
 
 struct _string* string_fromFile(char* filepath) {
-	if(filename == NULL) {
+	if(filepath == NULL) {
 		exit(EXIT_FAILURE);
 	}
 	
@@ -44,7 +44,7 @@ struct _string* string_fromFile(char* filepath) {
 	FILE* fp;
 	char ch;
 	size_t n_chars = 0;
-	int i;
+	size_t i;
 
 	fp = fopen(filepath, "r");
 	if(fp == NULL) {

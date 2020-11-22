@@ -5,7 +5,7 @@
 
 #include "utils.h"
 
-struct _array* {
+struct _array {
 	void* data;
 	size_t n_allocatedchunks;
 	size_t n_usedchunks;
@@ -24,6 +24,17 @@ struct _array* array_init(void) {
 	arr->chunksize = 0;
 
 	return arr;
+}
+
+void array_resize(struct _array* arr, size_t n_newchunks) {
+	assert(arr != NULL);
+
+	size_t newsize = n_newchunks * arr->chunksize;
+	void* newptr = realloc(arr->data, newsize);
+	
+	assert(newptr != NULL);
+
+	return;
 }
 
 struct _array* array_create(size_t num, size_t chunksize) {
@@ -132,7 +143,7 @@ void array_enqueue(struct _array* arr, void* data) {
 
 	size_t displacement = arr->chunksize;
 	size_t size = arr->n_usedchunks * arr->chunksize;
-	memmov(arr->data + displacement, arr->data, size);
+	memmove(arr->data + displacement, arr->data, size);
 	memcpy(arr->data, data, arr->chunksize);
 	++arr->n_usedchunks;
 
@@ -148,7 +159,7 @@ void array_dequeue(struct _array* arr, void* buf) {
 			memcpy(buf, arr->data, arr->chunksize);
 		}
 		size_t displacement = arr->chunksize;
-		aize_t size = arr->n_usedchunks * arr->chunksize;
+		size_t size = arr->n_usedchunks * arr->chunksize;
 		memmove(arr->data, arr->data + displacement, size);
 	}
 
