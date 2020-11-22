@@ -17,8 +17,6 @@ void		array_pop(array_t arr, void* buf);
 void		array_enqueue(array_t arr, void* data);
 void		array_dequeue(array_t arr, void* buf);
 array_t	array_copy(array_t arr);
-array_t	array_subarray(array_t arr, size_t begin);
-array_t	arra_subarray(array_t arr, size_t begin, size_t count);
 
 /***************************************************************************
 ********************************* STRING ***********************************

@@ -20,22 +20,22 @@ struct _string* string_init(void) {
 	return str;	
 }
 
-struct _string* string_fromCharArray(char* arr) {
+struct _string* string_fromCharArray(char* cstr) {
 	if(arr == NULL) {
 		exit(EXIT_FAILURE);
 	}
 
 	struct _string* str = string_init();
 	
-	str->l = strlen(arr);
+	str->l = strlen(cstr);
 
 	str->s = malloc(str->l);
-	strcpy(str->s, arr);
+	strcpy(str->s, cstr);
 
 	return str;
 }
 
-struct _string* string_fromFile(char* filename) {
+struct _string* string_fromFile(char* filepath) {
 	if(filename == NULL) {
 		exit(EXIT_FAILURE);
 	}
@@ -46,7 +46,7 @@ struct _string* string_fromFile(char* filename) {
 	size_t n_chars = 0;
 	int i;
 
-	fp = fopen(filename, "r");
+	fp = fopen(filepath, "r");
 	if(fp == NULL) {
 		exit(EXIT_FAILURE);
 	}
