@@ -7,8 +7,8 @@
 #define inputFile "./input.txt"
 #define testFile1 "./test1.txt"
 
-int32 part1(char** rows, uint32 n_rows);
-int32 part2(char** rows, uint32 n_rows);
+int32 part1(char** rows);
+int32 part2(char** rows);
 void test(char* filename, int32 expected1, int32 expected2);
 
 int main(void) {
@@ -16,7 +16,6 @@ int main(void) {
 	test(testFile1, 2, 1);
 
 	FILE* fp;
-	uint32 n_lines;
 	char** rows = NULL;
 	char* row;
 	int32 p1, p2;
@@ -25,8 +24,8 @@ int main(void) {
 	while ((row = stb_fgets_malloc(fp)) != NULL) {
 		stb_arr_push(rows, row);
 	}
-	p1 = part1(rows, n_lines);
-	p2 = part2(rows, n_lines);
+	p1 = part1(rows);
+	p2 = part2(rows);
 
 	printf("Part 1: %d\n", p1);	// 548
 	printf("Part 2: %d\n", p2);	// 502
@@ -36,7 +35,6 @@ int main(void) {
 
 void test(char* filename, int32 expected1, int32 expected2) {
 	FILE* fp;
-	uint32 n_lines;
 	char** rows = NULL;
 	char* row;
 	int32 p1, p2;
@@ -45,14 +43,14 @@ void test(char* filename, int32 expected1, int32 expected2) {
 	while ((row = stb_fgets_malloc(fp)) != NULL) {
 		stb_arr_push(rows, row);
 	}
-	p1 = part1(rows, n_lines);
-	p2 = part2(rows, n_lines);
+	p1 = part1(rows);
+	p2 = part2(rows);
 
 	assert(expected1 == p1);
 	assert(expected2 == p2);
 }
 
-int32 part1(char** rows, uint32 n_rows) {
+int32 part1(char** rows) {
 	uint32 correct = 0;
 	char** line;
 
@@ -83,7 +81,7 @@ int32 part1(char** rows, uint32 n_rows) {
 	return correct;
 }
 
-int32 part2(char** rows, uint32 n_rows) {
+int32 part2(char** rows) {
 	uint32 correct = 0;
 	char** line;
 

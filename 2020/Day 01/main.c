@@ -9,21 +9,25 @@
 #define testFile2 "test2.txt"
 #define testFile3 "test3.txt"
 
-int32 part1(char** rows, uint32 n);
-int32 part2(char** rows, uint32 n);
+int32 part1(char** rows);
+int32 part2(char** rows);
 void test(char* filename, int32 expected, int32 expected2);
 
 int main(void) {
 
 	test(testFile1, 514579, 241861950);
 
-	uint32 n_lines;
+	FILE* fp;
 	char** rows = NULL;
+	char* row;
 	int32 p1, p2;
 
-	rows = stb_stringfile_trimmed(inputFile, &n_lines, '\0');
-	p1 = part1(rows, n_lines);
-	p2 = part2(rows, n_lines);
+	fp = fopen(inputFile, "rb");
+	while ((row = stb_fgets_malloc(fp)) != NULL) {
+		stb_arr_push(rows, row);
+	}
+	p1 = part1(rows);
+	p2 = part2(rows);
 
 	printf("Part 1: %d\n", p1);	// 713184
 	printf("Part 2: %d\n", p2);	// 261244452
@@ -32,23 +36,27 @@ int main(void) {
 }
 
 void test(char* filename, int32 expected1, int32 expected2) {
-	uint32 n_lines;
+	FILE* fp;
 	char** rows = NULL;
+	char* row;
 	int32 p1, p2;
 
-	rows = stb_stringfile_trimmed(filename, &n_lines, '\0');
-	p1 = part1(rows, n_lines);
-	p2 = part2(rows, n_lines);
+	fp = fopen(filename, "rb");
+	while ((row = stb_fgets_malloc(fp)) != NULL) {
+		stb_arr_push(rows, row);
+	}
+	p1 = part1(rows);
+	p2 = part2(rows);
 
-	assert(expected1 == part1(rows, n_lines));
-	assert(expected2 == part2(rows, n_lines));
+	assert(expected1 == p1);
+	assert(expected2 == p2);
 }
 
-int32 part1(char** rows, uint32 n) {
+int32 part1(char** rows) {
 	uint i, j;
 
-	for (i = 0; i < n; ++i) {
-		for (j = i + 1; j < n; ++j) {
+	for (i = 0; i < stb_arr_len(rows); ++i) {
+		for (j = i + 1; j < stb_arr_len(rows); ++j) {
 			int a, b;
 
 			a = atoi(rows[i]);
@@ -64,12 +72,12 @@ int32 part1(char** rows, uint32 n) {
 	assert(FALSE);
 }
 
-int32 part2(char** rows, uint32 n) {
+int32 part2(char** rows) {
 	uint i, j, k;
 
-	for (i = 0; i < n; ++i) {
-		for (j = i + 1; j < n; ++j) {
-			for (k = j + 1; k < n; ++k) {
+	for (i = 0; i < stb_arr_len(rows); ++i) {
+		for (j = i + 1; j < stb_arr_len(rows); ++j) {
+			for (k = j + 1; k < stb_arr_len(rows); ++k) {
 				int a, b, c;
 
 				a = atoi(rows[i]);
