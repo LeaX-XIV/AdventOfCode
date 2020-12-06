@@ -6,8 +6,6 @@
 
 #define inputFile "input.txt"
 #define testFile1 "test1.txt"
-#define testFile2 "test2.txt"
-#define testFile3 "test3.txt"
 
 #define FRONT 'F'
 #define BACK 'B'
@@ -21,8 +19,6 @@ void test(char* filename, int32 expected, int32 expected2);
 int main(void) {
 
 	test(testFile1, 820, 0);
-	// test(testFile2, 1, 0);
-	// test(testFile3, 1, 0);
 
 	FILE* fp;
 	char** rows = NULL;
@@ -96,7 +92,7 @@ int32 part2(char** rows) {
 	uint32* s;
 	uint32 myseat;
 
-	for (myseat = 0; myseat < 950; ++myseat) {
+	for (myseat = 0; myseat < 1024; ++myseat) {
 		stb_arr_push(seats, 0);
 	}
 
