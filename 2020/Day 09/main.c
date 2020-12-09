@@ -99,20 +99,24 @@ stb_uint64 part2(char** rows, uint32 preamble, uint32 window) {
 		for (j = i + 1; j < stb_arr_len(rows) && !ok; ++j) {
 			sum += atoll(rows[j]);
 
+			if (sum > invalid) {
+				break;
+			}
+
 			if (sum == invalid) {
 				ok = TRUE;
 			}
+
 		}
 	}
 
 	if (ok) {
-		for(--i; i < j; ++i) {
+		for (--i; i < j; ++i) {
 			stb_uint64 a = atoll(rows[i]);
 			min = stb_min(min, a);
 			max = stb_max(max, a);
 		}
 	}
-	
+
 	return min + max;
 }
-
