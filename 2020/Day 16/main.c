@@ -147,7 +147,7 @@ stb_uint64 part2(char** rows) {
 	perm(0, sol, mark, rules, tickets);
 
 	for (i = 0; i < stb_arr_len(rules); ++i) {
-		if (sol[i] <= 5) {
+		if (0 == strncmp(rules[sol[i]].desc, "departure", 9)) {
 			// Departure
 			dep *= tickets[0][i];
 		}
@@ -193,18 +193,7 @@ uint8 perm(uint32 pos, uint32* sol, uint8* mark, rule* rules, uint32** tickets) 
 	uint32 n = stb_arr_len(rules);
 
 	if (pos >= n) {
-		// Check for validity
-		// uint32 j;
-
-		// for (j = 0; j < stb_arr_len(tickets); ++j) {
-		// 	for (i = 0; i < stb_arr_len(rules); ++i) {
-		// 		uint32 v = tickets[j][i];
-		// 		if ((v < rules[j].low.min || v > rules[j].low.max) && (v < rules[j].high.min || v > rules[j].high.max)) {
-		// 			return FALSE;
-		// 		}
-		// 	}
-		// }
-
+		// Arrived here, all tickets follow the ordered rules
 		return TRUE;
 	}
 
