@@ -1,6 +1,6 @@
 // https://adventofcode.com/2020/day/12
 #define STB_DEFINE
-#include "lib/stb.h"
+#include "../lib/stb.h"
 
 #include <assert.h>
 

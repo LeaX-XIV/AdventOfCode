@@ -10,7 +10,7 @@ ODIR = obj
 _OBJ =
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-DEPS = lib/stb.h
+DEPS = ../lib/stb.h
 
 main: $(OBJ) $(patsubst %,$(ODIR)/%,main.o)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
