@@ -28,7 +28,16 @@ while(springdroid.waitForOutput()):
 springdroid.stop()
 springdroid.start()
 commandRun = \
-'''RUN
+'''NOT C T
+NOT B J
+OR T J
+NOT A T
+OR T J
+AND D J
+AND H J
+NOT A T
+OR T J
+RUN
 '''
 for c in commandRun:
 	springdroid.feedInput(ord(c))
@@ -36,4 +45,4 @@ while(springdroid.waitForOutput()):
 	try:
 		print(chr(c := (springdroid.getOutput())), end='')
 	except:
-		print(c)	# Part 2:
+		print(c)	# Part 2: 1142830249
