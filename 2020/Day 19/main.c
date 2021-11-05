@@ -113,6 +113,7 @@ int32 part2(char** rows) {
 	return 0;
 }
 
+// https://en.m.wikipedia.org/wiki/Chomsky_normal_form#Converting_a_grammar_to_Chomsky_normal_form
 void to_normal_form(rule* grammar) {
 	uint32 n = stb_arr_len(grammar);
 
@@ -126,27 +127,24 @@ void to_normal_form(rule* grammar) {
 			rule newStart = { .pos = n, .nonTerminal = {{r.pos, -1}, {-1, -1}}, .isTerminal = FALSE, .terminal = 0, .isStart = TRUE };
 			stb_arr_push(grammar, newStart);
 			++n;
-			printf("Starting terminal changed from %d to %d\n", r.pos, newStart.pos);
+			// printf("Starting terminal changed from %d to %d\n", r.pos, newStart.pos);
 		}
 	}
 
-	printf("START\n");
 
 	// TERM: Eliminate rules with nonsolitary terminals
 	//  Can assume input has no rules with non solitary terminals
 	//  Skipped
-	printf("TERM\n");
 
 	// BIN: Eliminate right-hand sides with more than 2 nonterminals
 	//  Can assume input does not have more than 2 non terminals on the right-hand side
 	//  The test input does though (who cares)
 	//  Skipped
-	printf("BIN\n");
 
 	// DEL: Eliminate ε-rules
 	//  Can assume input has no empty symbol
 	//  Skipped
-	printf("DEL\n");
+	// printf("DEL\n");
 
 	// UNIT: Eliminate unit rules
 	for (i = n-1; i >= 0; --i) {
@@ -157,18 +155,17 @@ void to_normal_form(rule* grammar) {
 			uint32 d = r.nonTerminal[1][0];
 			uint32 e = r.nonTerminal[1][1];
 			if ((b != -1 && c == -1) || (d != -1 && e == -1)) {
-				printf("Detected unit rule %d\n", r.pos);
+				// printf("Detected unit rule %d\n", r.pos);
 				for (j = 0; j < n; ++j) {
 					rule r2 = grammar[j];
 					if (!r2.isStart && r2.pos == b || r2.pos == d) {
-						printf("  Changing rule %d\n", r2.pos);
+						// printf("  Changing rule %d\n", r2.pos);
 						rule newRule = {
 							.pos = r.pos,
 							.isStart = r2.isStart,
 							.isTerminal = r2.isTerminal,
 							.nonTerminal = {{r2.nonTerminal[0][0], r2.nonTerminal[0][1]}, {r2.nonTerminal[1][0], r2.nonTerminal[1][1]}},
 							.terminal = r2.terminal };
-						// grammar[j].pos = r.pos;
 						stb_arr_push(grammar, newRule);
 						++n;
 
@@ -179,7 +176,6 @@ void to_normal_form(rule* grammar) {
 			}
 		}
 	}
-	printf("UNIT\n");
 }
 
 // https://en.m.wikipedia.org/wiki/CYK_algorithm
