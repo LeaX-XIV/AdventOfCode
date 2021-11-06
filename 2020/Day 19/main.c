@@ -138,7 +138,7 @@ void to_normal_form(rule* grammar) {
 
 	// BIN: Eliminate right-hand sides with more than 2 nonterminals
 	//  Can assume input does not have more than 2 non terminals on the right-hand side
-	//  The test input does though (who cares)
+	//  The test input 1 does though (manually changed)
 	//  Skipped
 
 	// DEL: Eliminate ε-rules
