@@ -8,6 +8,17 @@ const TASKS = [
 	{ filename: "input.txt" },
 ];
 
+function walk(x1, y1, x2, y2, grid) {
+	let [dx, dy] = [x2 - x1, y2 - y1].map(e => Math.sign(e));
+
+	while(x1 != x2 || y1 != y2) {
+		grid[y1][x1] += 1;
+		x1 += dx;
+		y1 += dy;
+	}
+	grid[y1][x1] += 1;
+}
+
 function part1(contents) {
 	assert(contents.length % 4 === 0, "");
 	const N = 1000;
@@ -15,24 +26,11 @@ function part1(contents) {
 	let i;
 
 	for(i = 0; i < contents.length; i += 4) {
-		const [x1, y1, x2, y2] = contents.slice(i, i + 4);
-		let startLine, endLine;
+		let [x1, y1, x2, y2] = contents.slice(i, i + 4);
 
-		if(x1 === x2) {	// Vertical
-			startLine = Math.min(y1, y2);
-			endLine = Math.max(y1, y2);
-
-			while(startLine <= endLine) {
-				grid[startLine++][x1] += 1;
-			}
-		} else if(y1 === y2) {	// Horizontal
-			startLine = Math.min(x1, x2);
-			endLine = Math.max(x1, x2);
-
-			while(startLine <= endLine) {
-				grid[y1][startLine++] += 1;
-			}
-		} else continue;
+		if(x1 === x2 || y1 === y2) {
+			walk(x1, y1, x2, y2, grid);
+		}
 	}
 
 	return grid.flatMap(e => e).filter(e => e > 1).length
@@ -46,14 +44,8 @@ function part2(contents) {
 
 	for(i = 0; i < contents.length; i += 4) {
 		let [x1, y1, x2, y2] = contents.slice(i, i + 4);
-		let [dx, dy] = [x2 - x1, y2 - y1].map(e => Math.sign(e));
 
-		while(x1 != x2 || y1 != y2) {
-			grid[y1][x1] += 1;
-			x1 += dx;
-			y1 += dy;
-		}
-		grid[y1][x1] += 1;
+		walk(x1, y1, x2, y2, grid);
 	}
 
 	return grid.flatMap(e => e).filter(e => e > 1).length
