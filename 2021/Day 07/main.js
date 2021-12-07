@@ -36,15 +36,11 @@ function part1(contents) {
 }
 
 function part2(contents) {
-	const avgValue = avg(contents);
-
-	return Math.min(...[avgValue]
+	return Math.min(...[avg(contents)]
 		.flatMap(v => [Math.floor(v), Math.ceil(v)])
 		.map(v => contents
-			.map(xPos => Array.from({ length: Math.abs(xPos - v) },
-				(_, i) => i + 1)
-				.reduce((a, b) => a + b, 0)
-			)
+			.map(xPos => Math.abs(xPos - v))
+			.map(dist => (dist * (dist + 1)) / 2)
 			.reduce((a, b) => a + b)
 		));
 }
