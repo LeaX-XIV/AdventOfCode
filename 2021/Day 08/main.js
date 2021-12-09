@@ -64,26 +64,19 @@ function part2(contents) {
 		pred['f'] = one.split('');
 		const seven = ss.filter(s => s.length === 3)[0];
 		pred['a'] = diff(seven, one);
-		assert(pred['a'].length === 1, `Predicted 'a' = ${pred['a']}`);
 		const four = ss.filter(s => s.length === 4)[0];
 		pred['b'] = diff(four, one).split('');
 		const eight = ss.filter(s => s.length === 7)[0];
 		const six = ss.filter(s => s.length === 6 && diff(s, one).length === 5)[0];
 		pred['f'] = intersect(one, six);
-		assert(pred['f'].length === 1, `Predicted 'f' = ${pred['g']}`);
 		pred['c'] = diff(one, six);
-		assert(pred['c'].length === 1, `Predicted 'c' = ${pred['c']}`);
 		const zero = ss.filter(s => s.length === 6 && contains(s, one) && diff(four, s).length === 1)[0];
 		pred['d'] = diff(four, zero);
-		assert(pred['d'].length === 1, `Predicted 'd' = ${pred['d']}`);
 		pred['b'] = diff(pred['b'].join(''), pred['d']);
-		assert(pred['b'].length === 1, `Predicted 'b' = ${pred['b']}`);
 		const three = ss.filter(s => s.length === 5 && contains(s, [pred['a'], pred['c'], pred['d'], pred['f']].join('')))[0];
 		pred['g'] = diff(three, [pred['a'], pred['c'], pred['d'], pred['f']].join(''));
-		assert(pred['g'].length === 1, `Predicted 'g' = ${pred['g']}`);
 		const nine = ss.filter(s => s.length === 6 && contains(s, one) && contains(s, [pred['a'], pred['b'], pred['c'], pred['d'], pred['f'], pred['g']].join('')))[0];
 		pred['e'] = diff(eight, nine);
-		assert(pred['e'].length === 1, `Predicted 'e' = ${pred['e']}`);
 
 		for(const idx in pred) {
 			const p = pred[idx];
