@@ -6,4 +6,4 @@
 $ nodejs main.js -visual
 ```
 
-![](./visualization.gif)
+[Visualization (epilepsy warning)](./visualization.gif)
