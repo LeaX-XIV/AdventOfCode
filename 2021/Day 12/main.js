@@ -5,8 +5,8 @@ const fs = require('fs');
 
 const TASKS = [
 	{ filename: "test1.txt", exp1: 10, exp2: 36 },
-	{ filename: "test2.txt", exp1: 19 },
-	{ filename: "test3.txt", exp1: 226 },
+	{ filename: "test2.txt", exp1: 19, exp2: 103 },
+	{ filename: "test3.txt", exp1: 226, exp2: 3509 },
 	{ filename: "input.txt" },
 ];
 
