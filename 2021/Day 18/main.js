@@ -8,12 +8,14 @@ const TASKS = [
 	// { filename: "test1.txt", exp1: 445, /* exp2: 0, */ /* contents: "" */ },
 	// { filename: "test2.txt", exp1: 791, /* exp2: 0, */ /* contents: "" */ },
 	// { filename: "test3.txt", exp1: 1137, /* exp2: 0, */ /* contents: "" */ },
-	{ filename: "test4.txt", exp1: 3488, /* exp2: 0, */ /* contents: "" */ },
-	{ filename: "test5.txt", exp1: 1384, /* exp2: 0, */ /* contents: "" */ },
-	{ filename: "test6.txt", exp1: 143, /* exp2: 0, */ /* contents: "" */ },
-	{ filename: "test7.txt", exp1: 4140, /* exp2: 0, */ /* contents: "" */ },
+	// { filename: "test4.txt", exp1: 3488, /* exp2: 0, */ /* contents: "" */ },
+	// { filename: "test5.txt", exp1: 1384, /* exp2: 0, */ /* contents: "" */ },
+	// { filename: "test6.txt", exp1: 143, /* exp2: 0, */ /* contents: "" */ },
+	// { filename: "test7.txt", exp1: 4140, /* exp2: 0, */ /* contents: "" */ },
 	{ filename: "input.txt", /* contents: "" */ },
 ];
+
+const KNOWN_WRONG_SOLS = [[4327], []];
 
 class SFNumber {
 	constructor(l, r) {
@@ -21,13 +23,16 @@ class SFNumber {
 		this.r = r;
 	}
 
+	/* TODO
+		Bug is probabily some edge case around here
+	*/
 	explode(level = 0) {
 		if(level >= 4 && typeof (this.l) === 'number' && typeof (this.r) === 'number') {
 			return true;
 		}
 
 		let ret;
-		if(typeof (this.l) === 'object' && typeof (this.l) !== 'number') {
+		if(typeof (this.l) === 'object') {
 			ret = this.l.explode(level + 1);
 			if(typeof (ret) === 'boolean' && ret === true) {
 				const toRemove = this.l;
@@ -61,7 +66,7 @@ class SFNumber {
 				return ret;
 			}
 		}
-		if(typeof (this.r) === 'object' && typeof (this.r) !== 'number') {
+		if(typeof (this.r) === 'object') {
 			ret = this.r.explode(level + 1);
 			if(typeof (ret) === 'boolean' && ret === true) {
 				const toRemove = this.r;
@@ -127,10 +132,11 @@ class SFNumber {
 
 	reduce() {
 		let done = true;
+		// console.log(this.toString());
 		while(done) {
 			done = false;
-			while(this.explode()) { done = true; }
-			if(this.split()) { done = true; }
+			while(this.explode()) { done = true; /*console.log("Explosion!", this.toString());*/ }
+			if(this.split()) { done = true; /*console.log("Split!", this.toString());*/ }
 		}
 		return this;
 	}
@@ -167,7 +173,7 @@ function part1(contents) {
 		sum = SFNumber.add(sum, b);
 	}
 
-	console.log(sum.toString());
+	// console.log(sum.toString());
 	return sum.magnitude();
 }
 
@@ -187,6 +193,8 @@ function solveFile({ filename, exp1, exp2, contents }) {
 
 		console.log(`Part 1: ${res1}`);
 		console.log(`Part 2: ${res2}`);
+		assert(KNOWN_WRONG_SOLS[0].every(w => res1 !== w), `${res1} is known to be wrong`);
+		assert(KNOWN_WRONG_SOLS[0].every(w => res1 !== w), `${res1} is known to be wrong`);
 		return;
 	}
 
