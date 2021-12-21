@@ -41,19 +41,33 @@ function part1(contents) {
 	return 3 * turns * Math.min(...scores);
 }
 
+function formKey(pos1, pos2, score1, score2) {
+	return score2 +
+		score1 * 21 +
+		pos2 * 21 * 21 +
+		pos1 * 21 * 21 * 21;
+}
+
+function unformKey(key) {
+	return [Math.floor(key / 21 / 21 / 21), Math.floor(key / 21 / 21) % 21, Math.floor(key / 21) % 21, key % 21];
+}
+
 function part2(contents) {
 	const wins = [0, 0];
-	const states = [{ pos: [...contents], scores: [0, 0], n: 1 }];
+	const states = new Map([]);
+	states.set(formKey(...contents, 0, 0), 1);
 
-	while(states.length > 0) {
-		const { pos, scores, n } = states.pop();
+	while(states.size > 0) {
+		const [key, n] = states.entries().next().value;
+		states.delete(key);
+		const [pos1, pos2, score1, score2] = unformKey(key);
 
 		for(let d1 = 1; d1 <= 3; ++d1) {
 			for(let d2 = 1; d2 <= 3; ++d2) {
 				for(let d3 = 1; d3 <= 3; ++d3) {
 
-					let uPos1 = pos[0];
-					let uScore1 = scores[0];
+					let uPos1 = pos1;
+					let uScore1 = score1;
 
 					uPos1 = (uPos1 + d1 + d2 + d3) % 10;
 					uScore1 += uPos1 === 0 ? 10 : uPos1;
@@ -65,8 +79,8 @@ function part2(contents) {
 							for(let dd2 = 1; dd2 <= 3; ++dd2) {
 								for(let dd3 = 1; dd3 <= 3; ++dd3) {
 
-									let uPos2 = pos[1];
-									let uScore2 = scores[1];
+									let uPos2 = pos2;
+									let uScore2 = score2;
 
 
 									uPos2 = (uPos2 + dd1 + dd2 + dd3) % 10;
@@ -75,18 +89,8 @@ function part2(contents) {
 									if(uScore2 >= 21) {
 										wins[1] += n;
 									} else {
-										const stateIdx = states.findIndex(s =>
-											s.pos[0] === uPos1 &&
-											s.pos[1] === uPos2 &&
-											s.scores[0] === uScore1 &&
-											s.scores[1] === uScore2
-										);
-
-										if(stateIdx >= 0) {
-											states[stateIdx].n += n;
-										} else {
-											states.push({ pos: [uPos1, uPos2], scores: [uScore1, uScore2], n });
-										}
+										const uKey = formKey(uPos1, uPos2, uScore1, uScore2);
+										states.set(uKey, (states.get(uKey) || 0) + n);
 									}
 								}
 							}
