@@ -5,6 +5,6 @@
 	  "removeComments": true,
 	  "preserveConstEnums": true,
 	  "sourceMap": true,
-	  "lib": ["es2016"]
+	  "lib": ["es2016", "es2021.String"]
 	}
 }
