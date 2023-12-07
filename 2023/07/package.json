@@ -1,0 +1,7 @@
+{
+	"scripts": {
+		"start": "start npm run debug & start npm run compile",
+		"debug":  "nodemon dist/index.js",
+		"compile": "npx tsc --watch"
+	}
+}
