@@ -1,0 +1,6 @@
+{
+	"compilerOptions": {
+		"outDir": "dist",
+		"lib": ["es2016", "es2021.String"]
+	}
+}
